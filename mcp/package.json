@@ -1,0 +1,11 @@
+{
+  "name": "codecoach-mcp",
+  "version": "0.1.0",
+  "description": "CodeCoach MCP Server for Antigravity and AI coding agents",
+  "main": "server.mjs",
+  "type": "module",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "zod": "^3.25.76"
+  }
+}
