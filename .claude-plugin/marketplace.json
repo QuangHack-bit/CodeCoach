@@ -1,0 +1,25 @@
+{
+  "name": "codecoach",
+  "owner": {
+    "name": "YOUR_NAME"
+  },
+  "plugins": [
+    {
+      "name": "codecoach",
+      "source": "./",
+      "description": "A Socratic coding tutor for any language: hints instead of full solutions, contract-first design, parameter stress tests, adversarial code review, and no fabricated APIs.",
+      "version": "0.1.0",
+      "category": "education",
+      "license": "MIT",
+      "keywords": [
+        "tutor",
+        "learning",
+        "socratic",
+        "code-review",
+        "education",
+        "debugging",
+        "skills"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,2 @@
+# Keep LF line endings so Windows checkouts do not break SKILL.md frontmatter
+* text=auto eol=lf
