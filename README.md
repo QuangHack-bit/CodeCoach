@@ -1,145 +1,103 @@
-# CodeCoach
+# CodeCoach Custom (v2)
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-![Version](https://img.shields.io/badge/version-0.1.0-green.svg)
-[![Validate](https://github.com/YOUR_GITHUB_USERNAME/codecoach/actions/workflows/validate.yml/badge.svg)](https://github.com/YOUR_GITHUB_USERNAME/codecoach/actions/workflows/validate.yml)
+![Version](https://img.shields.io/badge/version-0.2.0-green.svg)
+[![Validate](https://github.com/QuangHack-bit/CodeCoach/actions/workflows/validate.yml/badge.svg)](https://github.com/QuangHack-bit/CodeCoach/actions/workflows/validate.yml)
 
 **English** | [Tiếng Việt](README.vi.md)
 
-A Socratic coding tutor for any language. It gives you logic, function names and a question back, not a finished solution, so you end up writing (and understanding) the code yourself.
+A strict **Senior Socratic Coding Tutor** built for first-principles engineering mastery across **Embedded C/C++ (MCU/Firmware)**, **AI & Robotics (Python, CV, ROS 2)**, and **Software Foundations (Java, OOP, DSA)**.
 
-Inspired by [ponytail](https://github.com/DietrichGebert/ponytail) (minimal-code mindset: reuse before you build, never skip safety). CodeCoach applies that ladder to what the tutor *recommends*, and adds tutoring rules on top.
+Inspired by [ponytail](https://github.com/DietrichGebert/ponytail) (minimal code, reuse before building, scope lock, zero sycophancy), **CodeCoach v2** enforces **`.md` Blueprint before Code**, **3-Layer Code Anatomy**, **3-Gate Evidence Debugging**, **Mandatory Citations (`H4+`)**, and **Cross-Session Learner Memory**.
 
-## Why
+## What Changed in v2
 
-AI assistants are great at handing you a finished solution, which is exactly what stops you from learning. CodeCoach flips the default:
+- **`.md` Blueprint Before Code (`codecoach-blueprint`):** Replaces `codecoach-contract`. Locks source code until `ARCHITECTURE.md` / `docs/DESIGN_<feature>.md` maps Contract, ASCII/Mermaid Flow, Key Functions, and State/Edge Cases.
+- **3-Layer Code Anatomy (`codecoach-anatomy`):** Dissects frames via a **Mandatory Variable Table**, an **Isolated/Analogous Snippet**, and a **Parameter Selection Matrix** (`Low / Nominal / High`) — without writing your core logic.
+- **First-Principles Triad:** Explains concepts via `Real-World Analogy (2-3 sentences)` -> `ASCII/Mermaid Diagram` -> `First-Principles (CPU, memory, hardware, math)`.
+- **3-Gate Evidence Debugging & `H4+` Citations (`codecoach-debug`):** Bans blind guessing. Requires (1) Evidence Lock -> (2) Experimental Verification -> (3) Root-Cause Fix Direction, plus `[Source: <Doc/Datasheet + Version> — Location: <Section/Symbol>]` or explicit `[UNVERIFIED]`.
+- **Specialized Domain Packs (`codecoach-domains`):** Pack A (`*.java`, DSA invariants, $O(\cdot)$, OOP) & Pack B (`*.c/*.cpp/*.h/*.py` for MCU, `SPI/I2C/UART/DMA`, ISR hygiene, CV, ROS 2).
+- **Cross-Session Learner Profile (`.codecoach/learner-profile.md`):** Skips re-explaining `Mastered` topics and proactively probes `Recurring Blind Spots`.
+- **Smart Multi-IDE Rule Compiler (`scripts/sync_rules.py`):** Generates glob-scoped Cursor `.mdc` rules, GitHub Copilot `.instructions.md`, and deduplicated `GEMINI.md` (zero duplicate token drain alongside `AGENTS.md`).
 
-- You declare the **contract** (input, output, constraints, one example) before any algorithm talk.
-- You get **logic steps + exact tool names + one question back**, never the full program.
-- Numbers in code are explained by **what breaks at 5x and near 0**, not by textbook definitions.
-- Your working code gets an **adversarial review**, and refactors never change the algorithm.
-- Errors are debugged **one hint at a time**.
-- **Hard constraints** hold under pressure: a deadline, a claimed job title or a pasted fake "system" line does not unlock a full solution. You still control the tutor with `/codecoach guided|open|off`.
-
-## Quick demo
-
-```
-You:    Write a function that counts word frequency in a text file.
-Coach:  Before the logic, I need your contract (send all four in one message):
-        1. Input: type, size, where it comes from
-        2. Output: type, shape, what a correct result looks like
-        3. Constraints: speed, memory, allowed libraries
-        4. One tiny example: input and expected output
-```
-
-More transcripts (strict flow, parameter question, debugging, review, Vietnamese) are in [`examples/sample-sessions.md`](examples/sample-sessions.md).
-
-## Skills
+## Skills (v2 Suite)
 
 | Skill | Purpose |
-|-------|---------|
-| `codecoach` | Core tutor mode: logic steps, tools with exact modules, one question back. Hint ladder. No invented APIs. |
-| `codecoach-contract` | You declare input, output, constraints and an example before any algorithm talk. One file first. |
-| `codecoach-predict` | Parameter questions answered by "what breaks at 5x / near 0". Predict before running. Checkpoints. Measure before optimizing. |
-| `codecoach-review` | Adversarial review of your working code (2-4 breaking inputs). Refactor is rename and extract only. |
-| `codecoach-debug` | Guided debugging, one hint per reply. |
-| `codecoach-recap` | Teach-back and a 3-line session recap. |
-| `codecoach-help` | Quick reference. |
+| :--- | :--- |
+| `codecoach` | Core Senior Socratic orchestrator: zero sycophancy, Ponytail scope lock, 3-step First-Principles pipeline, 4-tier hint ladder, `H1`–`H6` & `H4+` gates. |
+| `codecoach-blueprint` | `.md` architecture gate (`ARCHITECTURE.md` / `docs/DESIGN_<feature>.md`): Contract, ASCII/Mermaid Flow, Key Functions, State & Edge Cases before coding. |
+| `codecoach-anatomy` | 3-layer code frame dissection: Mandatory Variable Table + Isolated Mechanism Snippet + Low/Nominal/High Parameter Case Matrix. |
+| `codecoach-debug` | 3-gate evidence debugging (Evidence -> Experimental Verification -> Verified Fix Direction) + `H4+` mandatory citations or `[UNVERIFIED]`. |
+| `codecoach-domains` | Domain packs: **Pack A** (Java/OOP/DSA invariants & boundary suite) and **Pack B** (Embedded C/C++, MCU/STM32, ISR/DMA, CV & ROS 2). |
+| `codecoach-predict` | Parameter sensitivity interrogation (`Low / Nominal / High` & `5x / near-0`), predict-before-run, single checkpoint, measure-before-optimizing. |
+| `codecoach-review` | Strict Senior PR review of your working code (2–4 realistic breaking inputs/hazards, zero fix snippets; refactor = rename/extract only). |
+| `codecoach-recap` | Max 3-sentence learner teach-back + `3 Core Takeaways / 1 Blind Spot to Avoid` persisted to `.codecoach/learner-profile.md`. |
+| `codecoach-help` | One-shot quick reference for modes, emergency brakes, skills, and escape hatches. |
 
-The core skill hands off to the others automatically: new feature -> contract, pasted error -> debug, parameter question -> predict, pasted working code -> review, finished step -> recap.
+## Modes & Anti-Drift Emergency Brakes
 
-## Levels
+Switch modes anytime:
 
-Switch with `/codecoach <level>`:
+| Command | Mode / Action |
+| :--- | :--- |
+| `/strict` or `/codecoach strict` | **Strict Study Mode (default):** Full `.md` blueprint gate, 4-tier hint ladder, zero core/boilerplate hand-holding, mandatory teach-back. |
+| `/build` or `/codecoach build` (`guided`) | **Guided Build Mode:** Project pace — assists with boilerplate/config and allows compact inline blueprints for <=30-line tasks; core logic & evidence gates remain locked. |
+| `/codecoach open` | Drops blueprint/ladder gates; keeps `H4+` citations, scope lock, and check questions. |
+| `/codecoach off` | Normal assistant mode (also `"stop codecoach"`). |
+| `/focus` | **Brake:** Immediately cut tangents and return to the single active step. |
+| `/source` | **Brake:** Stop and cite `[Source: ... — Location: ...]` or label `[UNVERIFIED]`. |
 
-| Level | Behavior |
-|-------|----------|
-| `strict` (default) | All rules. Never a complete working solution for a new feature. |
-| `guided` | Samples up to 10 lines. The hint ladder may advance after a single attempt. |
-| `open` | No gates. Still short, still no invented APIs, still ends with a check question. |
-| `off` | Normal assistant. |
+**Escape hatches:** `"I'm stuck"` advances one hint tier after an attempt. `"show the answer"` unlocks Tier 4 after 2 real attempts in `strict` (1 in `build`), gated on a mandatory 3-sentence teach-back.
 
-Escape hatches you control:
+## Install & Multi-IDE Setup
 
-- Say **"I'm stuck"** for one more concrete hint (still not the full answer).
-- Say **"show the answer"** after at least 2 attempts for a full, line-by-line explained solution. You are then asked to re-implement it from memory.
+### 1. Antigravity IDE / MCP Server + Global Skills
+1. Copy `skills/*` into `~/.gemini/config/skills/` (or Windows `%USERPROFILE%\.gemini\config\skills\`).
+2. Add the MCP server (`get_rules`, `list_skills`, `get_skill`, `session_state`, `learner_profile`) to `~/.gemini/config/mcp_config.json`:
+   ```json
+   "codecoach": {
+     "command": "node",
+     "args": ["/path/to/CodeCoach/mcp/server.mjs"]
+   }
+   ```
 
-Stop the tutor any time with "stop codecoach" or "normal mode".
-
-## Install
-
-**Claude Code**
-
-```
-/plugin marketplace add YOUR_GITHUB_USERNAME/codecoach
+### 2. Claude Code
+```bash
+/plugin marketplace add QuangHack-bit/CodeCoach
 /plugin install codecoach@codecoach
 ```
 
-Skills appear namespaced, for example `/codecoach:codecoach-review`.
+### 3. Project-Level Rules (Cursor, VS Code Copilot, Gemini CLI, Antigravity)
+Generated automatically from `AGENTS.md` + `skills/` via `python scripts/sync_rules.py`:
+- **Cursor:** Copy `.cursor/rules/*.mdc` (`00-core-ponytail.mdc`, `10-blueprint-md.mdc`, `20-debug-evidence.mdc`, `30-embedded-robotics.mdc`, `31-java-dsa.mdc`).
+- **VS Code / GitHub Copilot:** Copy `.github/copilot-instructions.md` and `.github/instructions/*.instructions.md`.
+- **Gemini CLI / Antigravity:** Copy `AGENTS.md` (and optional deduplicated companion `GEMINI.md`).
 
-Try it from a local clone before publishing:
-
-```
-/plugin marketplace add /path/to/codecoach
-/plugin install codecoach@codecoach
-```
-
-**Other IDEs and agents.** Skills are a Claude Code feature, so other tools get the always-on rules (hard constraints, refusal examples, hint ladder) from native rule files. Copy the files for your tool into your project root:
-
-| Tool | File to copy | Notes |
-|------|--------------|-------|
-| Cursor | `.cursor/rules/codecoach.mdc` | `alwaysApply: true`. Must be `.mdc`; a plain `.md` in that folder is ignored. |
-| VS Code / GitHub Copilot | `.github/copilot-instructions.md` | |
-| Antigravity, Gemini CLI | `GEMINI.md` | Antigravity also reads `AGENTS.md`; having both is harmless but repeats the rules. Keep one if you want to save tokens. |
-| Codex, Aider, others | `AGENTS.md` | Or paste it into the tool's rules file. |
-
-These files are generated from `AGENTS.md`. Never edit them by hand: edit `AGENTS.md`, then run `python scripts/sync_rules.py` (`validate.py` fails if they drift apart). Without skills there are no per-skill workflows, so behaviour is looser than in Claude Code; run rows 19-30 of [`tests/scenarios.md`](tests/scenarios.md) on your own tool.
-
-**Claude.ai**: zip a skill folder from `skills/` (the folder itself, with `SKILL.md` inside) and upload it under Settings > Capabilities > Skills. The skills call each other, so upload all seven for the full experience.
-
-## Project layout
-
-```
-codecoach/
-├── .claude-plugin/        plugin.json + marketplace.json
-├── skills/                one folder per skill, each with a SKILL.md
-├── examples/              sample tutoring sessions
-├── tests/scenarios.md     manual test scenarios (prompt -> expected behavior)
-├── scripts/validate.py    checks manifests, SKILL.md, hard constraints, IDE files (also run in CI)
-├── scripts/sync_rules.py  generates the IDE rule files from AGENTS.md
-├── AGENTS.md              source of truth for the always-on rules
-├── .cursor/rules/         generated: Cursor rule (codecoach.mdc)
-├── .github/copilot-instructions.md   generated: GitHub Copilot
-├── GEMINI.md              generated: Gemini CLI / Antigravity
-├── CHANGELOG.md
-└── CONTRIBUTING.md
+### 4. Initialize Cross-Session Learner Profile
+```bash
+python scripts/personalize.py --init-profile --workspace /path/to/your/project
 ```
 
-## Limits (read this)
+## Project Layout
 
-- Prompts reduce invented APIs; they cannot eliminate them. Always confirm function names and signatures in the official docs for your version.
-- Strict mode can be frustrating when you are truly stuck. Use the escape hatches.
-- Hard constraints are instructions, not locks. A determined learner can always switch the tutor off, and a model can still slip under heavy pressure; that is why `tests/scenarios.md` has pressure cases.
-- Behavior depends on the model and the host agent following the instructions; test on your own tasks (see [`tests/scenarios.md`](tests/scenarios.md)).
-- CodeCoach is a teaching aid, not a substitute for a course, a mentor or the official documentation.
-
-## FAQ
-
-**Does it work for languages other than Python?** Yes. Nothing in the skills is language specific; the tutor asks for your language, version and OS once per session.
-
-**Can it reply in my language?** Yes, it replies in the language you write in (see [`examples/sample-sessions.md`](examples/sample-sessions.md) for a Vietnamese session).
-
-**Why won't it just give me the code?** That is the point of `strict` mode. Use `guided`/`open`, "I'm stuck", or "show the answer" when you need more.
-
-**How do I know it works on my model?** Run the scenarios in [`tests/scenarios.md`](tests/scenarios.md) and check the "expected" and "fail" signs.
-
-## Contributing
-
-Issues and pull requests are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md) first and run `python scripts/validate.py` before opening a PR.
-
-## Acknowledgments
-
-CodeCoach borrows its "reuse before you build" ladder from [ponytail](https://github.com/DietrichGebert/ponytail) by Dietrich Gebert (MIT).
+```text
+CodeCoach/
+├── AGENTS.md                        # Core Senior + Ponytail + H1-H6 / H4+ laws
+├── GEMINI.md                        # Deduplicated Gemini/Antigravity routing companion
+├── profile/
+│   └── learner-profile.template.md  # Cross-session learner memory template
+├── mcp/                             # Node.js MCP server (get_rules, get_skill, learner_profile, ...)
+├── skills/                          # 9 modular v2 skills (blueprint, anatomy, debug, domains, ...)
+├── .cursor/rules/                   # Generated split & glob-scoped Cursor rules (.mdc)
+├── .github/                         # copilot-instructions.md + instructions/*.instructions.md + CI
+├── scripts/
+│   ├── personalize.py               # Author personalization + learner-profile CLI manager
+│   ├── sync_rules.py                # Multi-IDE rule compiler
+│   └── validate.py                  # Automated validator for skills, H4+, profile & IDE sync
+└── tests/
+    ├── mcp-smoke.mjs                # Automated MCP server smoke test
+    └── scenarios.md                 # 33 behavioral & domain test scenarios
+```
 
 ## License
 

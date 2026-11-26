@@ -1,6 +1,6 @@
 {
   "name": "codecoach",
-  "version": "0.1.0",
-  "description": "A Socratic coding tutor for any language: hints instead of full solutions, contract-first design, parameter stress tests, adversarial code review, and no fabricated APIs.",
+  "version": "0.2.0",
+  "description": "CodeCoach Custom v2: Strict Senior Socratic coding tutor with .md blueprint-first gate, 3-layer code anatomy, 3-gate evidence debugging, H4+ citations, and cross-session learner profile.",
   "contextFileName": "AGENTS.md"
 }

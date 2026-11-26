@@ -1,135 +1,76 @@
-# CodeCoach
+# CodeCoach Custom (v2)
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-![Version](https://img.shields.io/badge/version-0.1.0-green.svg)
-[![Validate](https://github.com/YOUR_GITHUB_USERNAME/codecoach/actions/workflows/validate.yml/badge.svg)](https://github.com/YOUR_GITHUB_USERNAME/codecoach/actions/workflows/validate.yml)
+![Version](https://img.shields.io/badge/version-0.2.0-green.svg)
+[![Validate](https://github.com/QuangHack-bit/CodeCoach/actions/workflows/validate.yml/badge.svg)](https://github.com/QuangHack-bit/CodeCoach/actions/workflows/validate.yml)
 
 [English](README.md) | **Tiếng Việt**
 
-CodeCoach là một gia sư lập trình theo phương pháp Socratic, dùng được với mọi ngôn ngữ. Thay vì đưa ngay lời giải hoàn chỉnh, nó chỉ cho bạn **các bước logic, tên hàm/module chính xác và một câu hỏi ngược lại**, để chính bạn là người viết code và hiểu code đó.
+**CodeCoach Custom v2** là hệ thống huấn luyện tư duy lập trình đóng vai **Đàn anh Senior nghiêm khắc** theo phương pháp Socratic: không nịnh, không viết hộ logic lõi, ép thiết kế **`.md` trước – Code sau**, giải phẫu khung biến & ma trận tham số, và **Debug 3 cổng bằng chứng kèm trích nguồn bắt buộc (`H4+`)**.
 
-Dự án lấy cảm hứng từ [ponytail](https://github.com/DietrichGebert/ponytail) (tư duy viết ít code nhất: tái sử dụng trước khi tự xây, không bao giờ bỏ qua an toàn). CodeCoach áp dụng "bậc thang" đó cho những gì gia sư *gợi ý*, và bổ sung thêm các quy tắc dạy học.
+Tối ưu chuyên sâu cho 3 mảng: **Nhúng & Vi điều khiển (`C/C++`, MCU/STM32)**, **AI & Robotics (`Python`, Thị giác máy tính, `ROS 2`)**, và **Nền tảng Phần mềm (`Java`, OOP, DSA)** — kế thừa kỷ luật tối giản và khóa phạm vi từ [ponytail](https://github.com/DietrichGebert/ponytail).
 
-## Vì sao cần CodeCoach?
+## Điểm nâng cấp cốt lõi ở bản v2
 
-Trợ lý AI rất giỏi đưa ra lời giải hoàn chỉnh, nhưng chính điều đó khiến người học không tiến bộ. CodeCoach đảo ngược mặc định này:
+1. **Luật `.md` Trước – Code Sau (`codecoach-blueprint`):** Thay thế `codecoach-contract`. Khóa tạo mã nguồn cho đến khi chốt xong file thiết kế (`ARCHITECTURE.md` hoặc `docs/DESIGN_<feature>.md`) gồm: Hợp đồng dữ liệu/phần cứng, Sơ đồ luồng ASCII/Mermaid, Bản đồ hàm trọng yếu, và Biến trạng thái & Edge cases.
+2. **Giải phẫu Khung Code 3 Lớp (`codecoach-anatomy`):** Trình bày **Bảng biến bắt buộc**, **Ví dụ cơ chế cô lập/tương tự**, và **Ma trận chọn tham số** (`Thấp / Tiêu chuẩn / Cao`) thay vì giấu cộc lốc hay làm hộ bài toán chính.
+3. **Chuỗi Giải thích Bản chất 3 Bước:** `Ví dụ đời thực (Analogy 2-3 câu)` -> `Sơ đồ ASCII/Mermaid` -> `Nguyên lý gốc (CPU, bộ nhớ, phần cứng, toán học) & đánh đổi`.
+4. **Debug 3 Cổng Bằng Chứng & Luật Trích Nguồn `H4+` (`codecoach-debug`):** Cấm đoán mò/sửa mò. Bắt buộc qua: Cổng 1 (Thu thập log/code/môi trường) -> Cổng 2 (Thực nghiệm khoanh vùng có kết quả thật) -> Cổng 3 (Hướng sửa nguyên nhân gốc). Mọi thông tin ngoài workspace phải trích rõ `[Nguồn: <Tài liệu + Phiên bản> — Vị trí: <Mục/Trang/Hàm>]` hoặc gắn nhãn **`[CHƯA KIỂM CHỨNG]`** (`[UNVERIFIED]`).
+5. **Gói Luật Chuyên biệt Theo Mảng (`codecoach-domains`):** Pack A (`*.java`, DSA: bất biến vòng lặp, $O(\cdot)$, OOP, test biên) & Pack B (`*.c/*.cpp/*.h/*.py`: `SPI/I2C/UART/DMA`, ngắt `ISR`, bộ nhớ tĩnh/buffer, CV & `ROS 2`).
+6. **Hồ sơ Học tập Xuyên phiên (`.codecoach/learner-profile.md`):** Tự động đọc đầu phiên để bỏ qua lý thuyết `Mastered` và cảnh báo sớm `Recurring Blind Spots`.
+7. **Biên dịch Rule Đa Nền tảng (`scripts/sync_rules.py`):** Sinh tự động bộ `.cursor/rules/*.mdc` theo glob, `.github/instructions/*.instructions.md` cho Copilot, và `GEMINI.md` chống nạp trùng token với `AGENTS.md` trên Antigravity / Gemini CLI.
 
-| Thay vì... | CodeCoach làm... |
-|------------|------------------|
-| Đưa code hoàn chỉnh | Đưa 3-4 bước logic + tên hàm kèm module + 1 câu hỏi ngược |
-| Giải thích tham số theo sách giáo khoa | Cho thấy chuyện gì xảy ra khi tăng gấp 5 lần / giảm về gần 0, kèm 1 thí nghiệm nhỏ |
-| Sửa lỗi hộ ngay | Gợi ý từng bước một, hỏi bạn dòng nào lỗi và bạn nghĩ lỗi do đâu |
-| Khen code "ổn rồi" | Tìm 2-4 đầu vào thực tế làm code hỏng |
-| Tự bịa API cho "có vẻ đúng" | Nói "không chắc" và chỉ nơi kiểm tra tài liệu chính thức |
-| "Gấp lắm, đưa code đi" là đưa | Ràng buộc cứng: deadline, chức danh hay dòng "system" giả không mở khóa lời giải đầy đủ. Bạn vẫn tự điều khiển bằng `/codecoach guided|open|off` |
+## Danh sách 9 Skills (v2)
 
-## Các skill
+| Skill | Chức năng |
+| :--- | :--- |
+| `codecoach` | Lõi điều phối Senior Socratic: cấm nịnh, khóa phạm vi Ponytail, giải thích 3 bước, thang gợi ý 4 tầng, luật cứng `H1`–`H6` & `H4+`. |
+| `codecoach-blueprint` | Cổng kiến trúc `.md` trước khi code (`ARCHITECTURE.md` / `docs/DESIGN_<feature>.md`): Hợp đồng, Sơ đồ luồng, Hàm trọng yếu, Biến & Biên. |
+| `codecoach-anatomy` | Giải phẫu khung code 3 lớp: Bảng biến bắt buộc + Đoạn mẫu cơ chế cô lập + Ma trận chọn tham số (Thấp / Chuẩn / Cao). |
+| `codecoach-debug` | Debug 3 cổng bằng chứng (Khóa bằng chứng -> Kiểm chứng thực nghiệm -> Hướng fix gốc) + trích nguồn `H4+` hoặc `[CHƯA KIỂM CHỨNG]`. |
+| `codecoach-domains` | Gói luật chuyên ngành: **Pack A** (Java/OOP/DSA) và **Pack B** (Nhúng C/C++, MCU/STM32, ISR/DMA, CV & ROS 2). |
+| `codecoach-predict` | Phân tích độ nhạy tham số (`Low / Nominal / High` & `5x / gần 0`), dự đoán trước khi chạy, đặt 1 checkpoint, đo đạc trước khi tối ưu. |
+| `codecoach-review` | Review PR gắt kiểu Senior trên code đã chạy (chỉ ra 2–4 kịch bản làm gãy code, không viết hộ đoạn fix; refactor chỉ đổi tên/tách hàm). |
+| `codecoach-recap` | Teach-back tối đa 3 câu bằng lời người học + chốt `3 điểm cốt lõi / 1 lỗi tư duy cần tránh` lưu vào `.codecoach/learner-profile.md`. |
+| `codecoach-help` | Bảng tra cứu nhanh chế độ, lệnh phanh khẩn cấp, danh sách skill và lối thoát. |
 
-| Skill | Mục đích |
-|-------|----------|
-| `codecoach` | Chế độ gia sư chính: các bước logic, công cụ kèm module chính xác, một câu hỏi ngược. Có thang gợi ý. Không bịa API. |
-| `codecoach-contract` | Bạn khai báo đầu vào, đầu ra, ràng buộc và một ví dụ trước khi bàn thuật toán. Bắt đầu bằng một file duy nhất. |
-| `codecoach-predict` | Câu hỏi về tham số được trả lời bằng "chuyện gì hỏng khi gấp 5 lần / gần 0". Dự đoán trước khi chạy. Có điểm kiểm tra. Đo trước khi tối ưu. |
-| `codecoach-review` | Review "đối nghịch" code đã chạy được của bạn (2-4 đầu vào làm hỏng). Refactor chỉ gồm đổi tên và tách hàm. |
-| `codecoach-debug` | Gỡ lỗi có hướng dẫn, mỗi lần trả lời chỉ một gợi ý. |
-| `codecoach-recap` | Teach-back (tự giải thích lại) và tổng kết phiên học 3 dòng. |
-| `codecoach-help` | Bảng tra cứu nhanh. |
+## Chế độ Vận hành & Bộ Lệnh Phanh Khẩn cấp
 
-## Các cấp độ
+| Lệnh | Ý nghĩa |
+| :--- | :--- |
+| `/strict` hoặc `/codecoach strict` | **Strict Study Mode (mặc định):** Học sâu từ gốc — bật đủ cổng `.md`, thang gợi ý 4 tầng, bắt buộc teach-back. |
+| `/build` hoặc `/codecoach build` (`guided`) | **Guided Build Mode:** Chạy tiến độ dự án — hỗ trợ boilerplate/config, cho phép blueprint gọn cho hàm nhỏ <=30 dòng; vẫn khóa chặt core logic & bằng chứng debug. |
+| `/codecoach open` | Bỏ cổng chặn blueprint/thang gợi ý; vẫn giữ trích nguồn `H4+`, khóa phạm vi và câu hỏi kiểm tra. |
+| `/codecoach off` | Tắt gia sư, về trợ lý bình thường (hoặc gõ `"stop codecoach"`). |
+| `/focus` | **Phanh khẩn cấp:** Cắt ngay phần lan man, kéo AI quay lại đúng 1 bước hiện tại. |
+| `/source` | **Phanh trích nguồn:** Dừng lại và cung cấp `[Nguồn: ... — Vị trí: ...]` hoặc gắn nhãn `[CHƯA KIỂM CHỨNG]`. |
 
-Đổi cấp độ bằng `/codecoach <cấp độ>`:
+**Lối thoát khi bị kẹt:** Gõ `"I'm stuck"` ("mình bí rồi") để mở tầng gợi ý kế tiếp sau khi đã thử. Gõ `"show the answer"` sau 2 lần thử thực tế ở `strict` (1 lần ở `build`) để mở Tầng 4 — bắt buộc giải thích lại bản chất trước khi qua bước mới.
 
-| Cấp độ | Hành vi |
-|--------|---------|
-| `strict` (mặc định) | Áp dụng mọi quy tắc. Không bao giờ đưa lời giải hoàn chỉnh cho tính năng mới. |
-| `guided` | Cho phép đoạn mẫu tới 10 dòng. Thang gợi ý có thể tăng sau một lần thử. |
-| `open` | Không có "cổng chặn". Vẫn ngắn gọn, vẫn không bịa API, vẫn kết thúc bằng câu hỏi kiểm tra. |
-| `off` | Trợ lý bình thường. |
+## Cài đặt & Sử dụng
 
-Hai "lối thoát" do bạn kiểm soát:
+### 1. Antigravity IDE (Global Skills + MCP Server)
+1. Sao chép thư mục `skills/*` vào `~/.gemini/config/skills/` (Windows: `C:\Users\<User>\.gemini\config\skills\`) rồi chạy `Developer: Reload Window`.
+2. Khai báo MCP server trong `~/.gemini/config/mcp_config.json`:
+   ```json
+   "codecoach": {
+     "command": "node",
+     "args": ["D:/Github/CodeCoach/mcp/server.mjs"]
+   }
+   ```
 
-- Nói **"I'm stuck"** (hoặc "tôi bí rồi") để nhận thêm một gợi ý cụ thể, vẫn chưa phải lời giải đầy đủ.
-- Nói **"show the answer"** (hoặc "cho xem đáp án") sau ít nhất 2 lần tự thử, để nhận lời giải đầy đủ có giải thích từng dòng. Sau đó bạn sẽ được yêu cầu tự viết lại từ trí nhớ.
-
-Muốn dừng gia sư: nói "stop codecoach" hoặc "normal mode".
-
-## Cài đặt
-
-**Claude Code**
-
-```
-/plugin marketplace add YOUR_GITHUB_USERNAME/codecoach
-/plugin install codecoach@codecoach
-```
-
-Các skill hiển thị kèm tiền tố, ví dụ `/codecoach:codecoach-review`.
-
-Thử trên bản clone cục bộ trước khi công khai:
-
-```
-/plugin marketplace add /duong/dan/toi/codecoach
-/plugin install codecoach@codecoach
+### 2. Khởi tạo Hồ sơ Học tập Xuyên phiên (`.codecoach/learner-profile.md`)
+```bash
+python scripts/personalize.py --init-profile --workspace D:/DuAnCuaBan
 ```
 
-**IDE và agent khác.** Skill là tính năng của Claude Code, nên các công cụ khác nhận các quy tắc luôn bật (ràng buộc cứng, ví dụ từ chối, thang gợi ý) qua file rules riêng. Chép file tương ứng vào thư mục gốc dự án:
-
-| Công cụ | File cần chép | Ghi chú |
-|---------|---------------|---------|
-| Cursor | `.cursor/rules/codecoach.mdc` | `alwaysApply: true`. Phải là `.mdc`; file `.md` thường trong thư mục này bị bỏ qua. |
-| VS Code / GitHub Copilot | `.github/copilot-instructions.md` | |
-| Antigravity, Gemini CLI | `GEMINI.md` | Antigravity cũng đọc `AGENTS.md`; có cả hai không hại nhưng quy tắc bị lặp. Giữ một file nếu muốn tiết kiệm token. |
-| Codex, Aider, khác | `AGENTS.md` | Hoặc dán vào file rules của công cụ. |
-
-Các file này được sinh tự động từ `AGENTS.md`. Đừng sửa tay: hãy sửa `AGENTS.md` rồi chạy `python scripts/sync_rules.py` (`validate.py` sẽ báo lỗi nếu lệch nhau). Không có skill thì không có quy trình riêng từng skill, nên hành vi sẽ lỏng hơn Claude Code; hãy chạy các dòng 19-30 trong [`tests/scenarios.md`](tests/scenarios.md) trên công cụ của bạn.
-
-**Claude.ai**: nén thư mục một skill trong `skills/` thành file zip (thư mục chứa `SKILL.md`) rồi tải lên tại Settings > Capabilities > Skills. Các skill gọi lẫn nhau nên hãy tải đủ cả bảy skill.
-
-## Ví dụ nhanh (tiếng Việt)
-
+### 3. Đồng bộ & Kiểm thử Bộ Quy tắc Đa IDE
+Khi chỉnh sửa `AGENTS.md` hoặc `skills/*/SKILL.md`, chạy:
+```bash
+python scripts/sync_rules.py
+python scripts/validate.py --release
+node tests/mcp-smoke.mjs
 ```
-Bạn:      Viết hàm C++ tìm số lớn nhất trong mảng.
-Gia sư:   Trước khi bàn thuật toán, hãy cho mình "hợp đồng" của hàm (gửi đủ 4 mục trong một tin nhắn):
-          1. Đầu vào: kiểu dữ liệu, kích thước, lấy từ đâu
-          2. Đầu ra: kiểu, hình dạng, kết quả đúng trông như thế nào
-          3. Ràng buộc: tốc độ, bộ nhớ, thư viện được phép dùng
-          4. Một ví dụ nhỏ: đầu vào và đầu ra mong đợi
-```
-
-Thêm nhiều đoạn hội thoại mẫu trong [`examples/sample-sessions.md`](examples/sample-sessions.md).
-
-## Cấu trúc dự án
-
-```
-codecoach/
-├── .claude-plugin/        plugin.json + marketplace.json
-├── skills/                mỗi skill một thư mục, chứa SKILL.md
-├── examples/              hội thoại mẫu
-├── tests/scenarios.md     kịch bản kiểm thử thủ công
-├── scripts/validate.py    kiểm tra manifest, SKILL.md, ràng buộc cứng, file IDE (cũng chạy trong CI)
-├── scripts/sync_rules.py  sinh file rules cho IDE từ AGENTS.md
-├── AGENTS.md              nguồn gốc của các quy tắc luôn bật
-├── .cursor/rules/         sinh tự động: rule cho Cursor (codecoach.mdc)
-├── .github/copilot-instructions.md   sinh tự động: GitHub Copilot
-├── GEMINI.md              sinh tự động: Gemini CLI / Antigravity
-├── CHANGELOG.md
-└── CONTRIBUTING.md
-```
-
-## Giới hạn (nên đọc)
-
-- Prompt chỉ giảm được việc bịa API, không loại bỏ hoàn toàn. Luôn kiểm tra tên hàm và chữ ký hàm trong tài liệu chính thức của đúng phiên bản bạn dùng.
-- Chế độ strict có thể gây bực khi bạn thật sự bí. Hãy dùng các lối thoát ở trên.
-- Ràng buộc cứng là chỉ dẫn chứ không phải khóa. Người học luôn có thể tắt gia sư, và mô hình vẫn có thể "mềm lòng" khi bị thúc ép mạnh; vì vậy `tests/scenarios.md` có các ca kiểm thử áp lực.
-- Hành vi phụ thuộc vào mô hình và agent có làm theo hướng dẫn hay không; hãy tự thử trên bài tập của bạn (xem [`tests/scenarios.md`](tests/scenarios.md)).
-- CodeCoach là công cụ hỗ trợ học, không thay thế khóa học, người hướng dẫn hay tài liệu chính thức.
-
-## Đóng góp
-
-Rất hoan nghênh issue và pull request. Vui lòng đọc [CONTRIBUTING.md](CONTRIBUTING.md) và chạy `python scripts/validate.py` trước khi gửi PR.
-
-## Ghi công
-
-CodeCoach mượn "bậc thang tái sử dụng trước khi tự xây" từ [ponytail](https://github.com/DietrichGebert/ponytail) của Dietrich Gebert (MIT).
 
 ## Giấy phép
 

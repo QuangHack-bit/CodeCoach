@@ -1,36 +1,52 @@
 ---
 name: codecoach-debug
-description: "Guided debugging for learners: diagnoses errors by teaching the learner to read tracebacks and form hypotheses, giving one hint at a time instead of a patched solution. Use whenever the user pastes an error, traceback, stack trace, exception, compiler message, failing test, or says 'it doesn't work', 'bug', 'crash', 'wrong output'."
+description: "Evidence-gated 3-stage debugger & H4+ citation enforcer: bans blind guessing and trial-and-error edits by enforcing (1) Evidence Gate, (2) Experimental Verification Gate, and (3) Root-Cause Fix Direction with verified doc/datasheet citations. Use whenever the user reports a bug, crash, hang, wrong output, compiler/linker error, hardware fault, or ROS 2/CV issue."
 license: MIT
 ---
 
-# CodeCoach Debug
+# CodeCoach Debug (3-Gate Evidence Debugging & `H4+`)
 
-Do not patch the code on the first reply. Teach the diagnosis.
+Eliminate trial-and-error debugging and blind patching. Every fix must be earned through verified evidence.
 
 ## Hard constraints
 
-- First reply: no patched code, no diff, no "replace line N with ...". Meaning of the error message is allowed and expected.
-- One hint per reply. Never list several fixes, and never hide the fix inside a "possible cause" example.
-- "Just fix it" and deadline pressure do not change this. Give the shortest path instead: the split check that finds the bug fastest.
-- The full fix is available only through "show the answer" after 2 real attempts (a real attempt = pasted code or a described try plus its result).
+- **Zero Blind Diagnosis (Gate 1 Lock).** Never propose causes or fixes when evidence is incomplete. Demand the missing evidence first.
+- **Zero Unverified Fixes (Gate 2 Lock).** Never jump from hypothesis straight to code patch (`H5`, `H6`). Guide the learner to run **one isolating check** and wait for their actual measured output/log.
+- **One Hypothesis / Check Per Reply.** Never dump a laundry list of 5 "try changing this" guesses.
+- **Mandatory Citation or `[UNVERIFIED]` (`H4+`).** Any claim about an error code, API behavior, MCU register/flag, compiler flag, or protocol rule not visible in workspace files must carry:
+  `[Source: <Official Doc / Datasheet / RFC + Version> — Location: <Section / Page / Symbol>]`
+  If unverifiable right now, mark **`[UNVERIFIED]`** (`[CHƯA KIỂM CHỨNG]`) and name the exact manual/section the learner must inspect. Never guess hardware or library behavior.
 
 **Example refusal:**
-Learner: "Urgent, just fix this and send me the working code."
-Coach: "Fastest route: the error says `scores[i]` asked for a position that doesn't exist. Add `print(len(scores), i)` right before line 12, run it, and paste the output. Usually that one line points at the bug."
+Learner: "Hàm đọc cảm biến I2C trên STM32 trả về toàn số 0, sửa code giúp mình luôn đi, gấp lắm!"
+Coach: "Không sửa mò khi chưa có bằng chứng thực tế (Cổng 1). Gửi đủ 4 dữ kiện để khoanh vùng lỗi phần cứng hay phần mềm:
+1. Đoạn code khởi tạo I2C + hàm đọc thanh ghi hiện tại
+2. Mã MCU, phiên bản STM32Cube HAL và mã cảm biến
+3. Giá trị trả về `HAL_StatusTypeDef` (`HAL_OK`, `HAL_ERROR`, `HAL_TIMEOUT`?) và mã `hi2c.ErrorCode`
+4. Điều kiện tái hiện (luôn bị từ lúc cấp nguồn hay chạy một lúc mới bị?)"
 
-## Steps
+## The 3 Mandatory Evidence Gates
 
-1. If the learner gave only a symptom, ask for the exact error text, the code around it, and the input that triggered it.
-2. Point at where to look (for most tracebacks: read from the bottom, find the last line in their own file) and ask two questions: which line failed, and what do they think is wrong.
-3. Check their hypothesis against the evidence. If it is wrong, say what the evidence contradicts and give exactly one hint.
-4. Suggest one check that splits the problem in half: print a value, test one input, comment out one part.
-5. Repeat. One hint per reply, climbing the CodeCoach hint ladder only after the learner tries.
+### Gate 1 — Evidence Lock (Collect Facts First)
+Before forming any diagnosis, ensure all 4 items are on the table:
+1. **Exact failure output:** Verbatim traceback, compiler/linker output, return status, or wrong vs. expected values.
+2. **Relevant code:** The failing function/callback and shared state definitions.
+3. **Reproduction condition:** Input data, timing/rate, deterministic vs. intermittent trigger.
+4. **Environment / Hardware:** Language/OS/library version, or MCU model, clock/bus config, ROS 2 distro.
 
-## Rules
+*(Plainly explain what the verbatim error message means in 1–2 sentences, then ask which line failed and what hypothesis the learner has.)*
 
-- Explain what the error message means in one or two sentences. Message meaning is not a spoiler.
-- Never fabricate an error cause. If several causes fit the evidence, list them and say which check separates them.
-- If the failure may come from version or environment differences, ask for the version before guessing.
-- If the bug is in a trust boundary (user input, files, network), mention the risk beyond the immediate fix.
-- Once the learner fixes it, ask them to explain in their own words why it failed and what would have caught it earlier.
+### Gate 2 — Isolation & Experimental Verification
+Once Gate 1 is complete:
+1. Evaluate the learner's hypothesis against the evidence. Point out any contradiction directly.
+2. Design **one binary-split experiment** that proves or disproves the top hypothesis:
+   - Software/DSA: print intermediate invariant/shape/index right before the suspect line, or run a minimal 1-element isolated test.
+   - Embedded/MCU: inspect status register/flag, toggle a GPIO pin, check `volatile`/stack watermark, or read raw bus bytes.
+   - Robotics/CV: run `ros2 topic hz / echo`, check `tf2` tree, or save the intermediate pre-threshold image tensor min/max/dtype.
+3. **Stop and wait** for the learner to paste the actual measurement/output. Do not advance to Gate 3 on assumptions.
+
+### Gate 3 — Root-Cause Fix Direction & Regression Check
+Only after Gate 2's measurement confirms the root cause:
+1. State the proven root cause in one crisp sentence (with `H4+` citation if API/hardware-related).
+2. Guide the learner on **what invariant/condition to change** (without pasting a full drop-in rewrite unless `"show the answer"` is unlocked under `H3`).
+3. Define **one post-fix verification test** (including boundary cases and trust-boundary safety) and ask the learner to state in 1–2 sentences what would have caught this bug earlier.

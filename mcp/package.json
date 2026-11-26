@@ -1,7 +1,7 @@
 {
   "name": "codecoach-mcp",
-  "version": "0.1.0",
-  "description": "CodeCoach MCP Server for Antigravity and AI coding agents",
+  "version": "0.2.0",
+  "description": "CodeCoach Custom v2 MCP Server for Antigravity and AI coding agents",
   "main": "server.mjs",
   "type": "module",
   "dependencies": {

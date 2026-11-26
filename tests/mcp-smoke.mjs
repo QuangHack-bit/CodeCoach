@@ -41,18 +41,27 @@ try {
   const init = await request("initialize", {
     protocolVersion: "2024-11-05",
     capabilities: {},
-    clientInfo: { name: "smoke-test", version: "0.1.0" },
+    clientInfo: { name: "smoke-test", version: "0.2.0" },
   });
   assert.equal(init.result.serverInfo.name, "codecoach");
+  assert.equal(init.result.serverInfo.version, "0.2.0");
 
   child.stdin.write(JSON.stringify({ jsonrpc: "2.0", method: "notifications/initialized" }) + "\n");
 
   const tools = await request("tools/list");
   const names = tools.result.tools.map((t) => t.name).sort();
-  assert.deepEqual(names, ["get_rules", "get_skill", "list_skills", "session_state"]);
+  assert.deepEqual(names, ["get_rules", "get_skill", "learner_profile", "list_skills", "session_state"]);
 
   const badSkill = await request("tools/call", { name: "get_skill", arguments: { name: "../AGENTS" } });
   assert.equal(badSkill.result.isError, true);
+
+  const blueprintSkill = await request("tools/call", { name: "get_skill", arguments: { name: "codecoach-blueprint" } });
+  assert.equal(Boolean(blueprintSkill.result.isError), false);
+  assert.match(blueprintSkill.result.content[0].text, /CodeCoach Blueprint/);
+
+  // Legacy v1 alias compatibility
+  const aliasSkill = await request("tools/call", { name: "get_skill", arguments: { name: "codecoach-contract" } });
+  assert.match(aliasSkill.result.content[0].text, /CodeCoach Blueprint/);
 
   const state0 = await request("tools/call", { name: "session_state", arguments: { action: "get" } });
   assert.deepEqual(JSON.parse(state0.result.content[0].text), {
@@ -61,11 +70,22 @@ try {
     answerUnlocked: false,
   });
 
-  await request("tools/call", { name: "session_state", arguments: { action: "record_attempt" } });
-  const state2 = await request("tools/call", { name: "session_state", arguments: { action: "record_attempt" } });
-  assert.equal(JSON.parse(state2.result.content[0].text).answerUnlocked, true);
+  // Guided Build mode ('build') unlocks after 1 real attempt
+  await request("tools/call", { name: "session_state", arguments: { action: "set_level", level: "build" } });
+  const buildState = await request("tools/call", { name: "session_state", arguments: { action: "record_attempt" } });
+  assert.equal(JSON.parse(buildState.result.content[0].text).answerUnlocked, true);
 
-  console.log("OK: CodeCoach MCP smoke test passed");
+  // Strict mode requires 2 real attempts
+  await request("tools/call", { name: "session_state", arguments: { action: "reset" } });
+  const strict1 = await request("tools/call", { name: "session_state", arguments: { action: "record_attempt" } });
+  assert.equal(JSON.parse(strict1.result.content[0].text).answerUnlocked, false);
+  const strict2 = await request("tools/call", { name: "session_state", arguments: { action: "record_attempt" } });
+  assert.equal(JSON.parse(strict2.result.content[0].text).answerUnlocked, true);
+
+  const profileRes = await request("tools/call", { name: "learner_profile", arguments: { action: "get" } });
+  assert.match(profileRes.result.content[0].text, /CodeCoach Learner Profile/);
+
+  console.log("OK: CodeCoach v2 MCP smoke test passed");
 } finally {
   child.kill();
 }

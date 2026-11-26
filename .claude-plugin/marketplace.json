@@ -1,23 +1,26 @@
 {
   "name": "codecoach",
   "owner": {
-    "name": "YOUR_NAME"
+    "name": "QuangHack-bit"
   },
   "plugins": [
     {
       "name": "codecoach",
       "source": "./",
-      "description": "A Socratic coding tutor for any language: hints instead of full solutions, contract-first design, parameter stress tests, adversarial code review, and no fabricated APIs.",
-      "version": "0.1.0",
+      "description": "CodeCoach Custom v2: Strict Senior Socratic coding tutor with .md blueprint-first gate, 3-layer code anatomy, 3-gate evidence debugging, H4+ citations, domain packs (Java/DSA & Embedded/ROS 2/CV), and cross-session learner profile.",
+      "version": "0.2.0",
       "category": "education",
       "license": "MIT",
       "keywords": [
         "tutor",
-        "learning",
         "socratic",
-        "code-review",
-        "education",
+        "ponytail",
+        "embedded",
+        "ros2",
+        "dsa",
         "debugging",
+        "code-review",
+        "mcp",
         "skills"
       ]
     }
